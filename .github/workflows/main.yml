@@ -1,37 +1,24 @@
-name: Build Plugin
+name: Java CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ main ]
   pull_request:
-    branches: [ "main" ]
-  workflow_dispatch:
+    branches: [ main ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Setup Java 21
+      - uses: actions/checkout@v4
+      - name: Set up Java 25
         uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: '21'
-
-      - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v4
-
-      - name: Grant execute permission
-        run: chmod +x gradlew
-
-      - name: Build plugin
-        run: ./gradlew build
-
-      - name: Upload JAR
-        uses: actions/upload-artifact@v4
+          java-version: '25'
+      - name: Set up Gradle
+        uses: gradle/gradle-build-action@v2
         with:
-          name: PunishNotify
-          path: build/libs/*.jar
+          gradle-version: '8.6'
+      - name: Build with Gradle
+        run: ./gradlew build --no-daemon
