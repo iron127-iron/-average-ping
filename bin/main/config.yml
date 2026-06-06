@@ -1,0 +1,11 @@
+# 是否排除基岩版玩家
+exclude-bedrock: true
+
+# 更新間隔（Tick）
+update-tick: 20
+
+# 不計算平均 Ping 的玩家
+noping:
+  id:
+    - iron_127
+    - ExamplePlayer

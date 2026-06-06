@@ -1,0 +1,20 @@
+name: PingPlugin
+main: com.pingplugin.PingPlugin
+version: 1.0.0
+api-version: 1.21
+author: Generated
+commands:
+  ping:
+    description: Show ping information
+    usage: /<command> [player|help|reload|gui|add|remove]
+permissions:
+  ping.use:
+    default: true
+  ping.reload:
+    default: op
+  ping.admin:
+    default: op
+  ping.gui:
+    default: op
+  ping.ignore:
+    default: op
