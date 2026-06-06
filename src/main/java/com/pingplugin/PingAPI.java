@@ -10,7 +10,7 @@ public class PingAPI {
         if (player == null) return 0;
         try {
             return player.getPing();
-        } catch (NoSuchMethodError | Throwable t) {
+        } catch (Throwable t) {
             // Fallback: attempt reflection (Paper provides getPing normally)
             try {
                 Object o = player.getClass().getMethod("getPing").invoke(player);

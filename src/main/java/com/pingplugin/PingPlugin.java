@@ -1,12 +1,16 @@
 package com.pingplugin;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
-
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 主插件類別，負責載入設定、排程 cache 與註冊元件。
@@ -32,20 +36,15 @@ public final class PingPlugin extends JavaPlugin {
         loadConfigValues();
 
         // register command
-        this.getCommand("ping").setExecutor(new commands.PingCommand(this));
-        this.getCommand("ping").setTabCompleter(new commands.PingCommand(this));
+        this.getCommand("ping").setExecutor(new com.pingplugin.commands.PingCommand(this));
+        this.getCommand("ping").setTabCompleter(new com.pingplugin.commands.PingCommand(this));
 
         // listeners
-        getServer().getPluginManager().registerEvents(new listeners.PlayerListener(this), this);
-        getServer().getPluginManager().registerEvents(new gui.GuiManager(this), this);
+        getServer().getPluginManager().registerEvents(new com.pingplugin.listeners.PlayerListener(this), this);
+        getServer().getPluginManager().registerEvents(new com.pingplugin.gui.GuiManager(this), this);
 
-        // PlaceholderAPI hook (if present)
-        try {
-            Class.forName("me.clip.placeholderapi.PlaceholderAPI");
-            new PlaceholderPingExpansion(this).register();
-        } catch (ClassNotFoundException ignoredEx) {
-            getLogger().info("PlaceholderAPI not found, skipping expansion registration.");
-        }
+        // PlaceholderAPI support removed from compile-time to avoid CI resolution issues.
+        // If PlaceholderAPI is present at runtime, the expansion can be added separately.
 
         startCacheTask();
     }
@@ -101,7 +100,7 @@ public final class PingPlugin extends JavaPlugin {
                 total += ping;
                 count++;
                 // update tab name color
-                String colored = listeners.PlayerListener.colorForPing(ping) + p.getName() + " (" + ping + ")";
+                String colored = com.pingplugin.listeners.PlayerListener.colorForPing(ping) + p.getName() + " (" + ping + ")";
                 p.setPlayerListName(colored);
             } catch (Exception ignoredEx) {
                 // avoid NPEs or reflection errors
